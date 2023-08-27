@@ -1,0 +1,19 @@
+name: pvpx
+output: dist
+
+require:
+  - bolt
+  - wicked_expressions
+  - lightning_rod
+  - crankshaft
+
+data_pack:
+  name: pvpx
+  load: "src"
+
+pipeline:
+  - mecha
+
+meta:
+  bolt:
+    entrypoint: '*:main'

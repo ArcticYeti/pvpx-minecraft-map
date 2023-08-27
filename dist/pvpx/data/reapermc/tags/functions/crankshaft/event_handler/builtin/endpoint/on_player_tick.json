@@ -1,0 +1,32 @@
+{
+  "replace": false,
+  "values": [
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_join/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_jump/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_land/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sneak_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sneak/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sneak_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sprint_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sprint/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_sprint_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_glide_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_glide/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_glide_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_swim_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_swim/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_swim_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_burn_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_burn/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_burn_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_airborne_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_airborne/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_airborne_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_use_coas/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_use_wfoas/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow_start/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow_end/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_shoot_bow/0"
+  ]
+}

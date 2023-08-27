@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pvpx-minecraft-map"
+version = "0.1.0"
+description = "Source code for the PVPX Minecraft Map"
+authors = ["Jakub Opas <arcticyeti1@gmail.com>"]
+readme = "README.md"
+packages = [{include = "pvpx_map_datapack"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+beet = "0.92.0"
+mecha = "0.76.1"
+bolt = "0.37.0"
+wicked-expressions = "0.8.4"
+lightning-rod = "0.5.1"
+crankshaft = "0.8.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_load/1",
+    "pvpx:reapermc/crankshaft/event_handler/builtin/payload/on_load/0"
+  ]
+}

@@ -1,0 +1,2 @@
+function pvpx:reapermc/wicked_expressions/safe_load/scoreboard_setup
+function pvpx:reapermc/wicked_expressions/safe_load/flush_variable/bool

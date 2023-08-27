@@ -1,0 +1,6 @@
+
+
+
+class GameState:
+    CHOOSE_TEAMS = 'choose_teams'
+    CHOOSE_CLASSES = 'choose_classes'
