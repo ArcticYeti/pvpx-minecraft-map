@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "reapermc:crankshaft/event_handler/builtin/handler/on_player_tick/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_respawn/0",
     "pvpx:reapermc/crankshaft/event_handler/builtin/payload/on_tick/0"
   ]
 }

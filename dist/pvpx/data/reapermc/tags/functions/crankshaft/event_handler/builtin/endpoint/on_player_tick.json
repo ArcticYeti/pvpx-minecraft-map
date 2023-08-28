@@ -27,6 +27,8 @@
     "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow_start/0",
     "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow/0",
     "reapermc:crankshaft/event_handler/builtin/handler/on_player_charge_bow_end/0",
-    "reapermc:crankshaft/event_handler/builtin/handler/on_player_shoot_bow/0"
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_shoot_bow/0",
+    "reapermc:crankshaft/event_handler/builtin/handler/on_player_death/0",
+    "pvpx:reapermc/crankshaft/event_handler/builtin/payload/on_player_tick/0"
   ]
 }

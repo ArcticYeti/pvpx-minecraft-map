@@ -1,4 +1,6 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "pvpx:reapermc/crankshaft/event_handler/builtin/payload/on_player_load/0"
+  ]
 }
