@@ -1,6 +1,51 @@
+from typing import Callable
+from wicked_expressions:api import Scoreboard, ExpressionNode
 
-
+game_state = Scoreboard('pvpx')['.game_state']
+game_state_init_callbacks = {}
+game_state_exit_callbacks = {}
 
 class GameState:
-    CHOOSE_TEAMS = 'choose_teams'
-    CHOOSE_CLASSES = 'choose_classes'
+    CHOOSE_TEAM: int = 0
+    CHOOSE_CLASS: int = 1
+
+def set_game_state(state: GameState):
+    global game_state
+
+    # ** handled at runtime **
+    # determines the previous state
+    # and runs it's bound 'exit'
+    execute function f"pvpx:hardcoded/game_state_exit":
+        for possible_state, exit_callback in game_state_exit_callbacks.items():
+            if game_state == possible_state:
+                execute function f"pvpx:hardcoded/game_state_exit/{possible_state}":
+                    exit_callback()
+
+    game_state = state
+
+    # ** handled at compiletime **
+    # runs the bound 'init'
+    state_init_callback = game_state_init_callbacks.get(state)    
+    if state_init_callback != None:
+        state_init_callback()
+
+def get_game_state() -> ExpressionNode:
+    return game_state
+
+def bind_game_state_init(callback: Callable, state: GameState):
+    """Binds a function to run once when the game state begins"""
+
+    game_state_init_callbacks[state] = callback
+
+def bind_game_state_exit(callback: Callable, state: GameState):
+    """Binds a function to run once when the game state ends"""
+
+    game_state_exit_callbacks[state] = callback
+
+def load():
+    global game_state
+
+    if not game_state.exists():
+        game_state = GameState.CHOOSE_TEAM
+
+
