@@ -1,0 +1,9 @@
+from wicked_expressions:api import Data
+
+SHULKER_POS = [666666, 0, 666666]
+shulker_data = Data.block(f"{SHULKER_POS[0]} {SHULKER_POS[1]} {SHULKER_POS[2]}")
+
+def load():
+    setblock SHULKER_POS[0] SHULKER_POS[1] SHULKER_POS[2] minecraft:white_shulker_box
+    forceload add SHULKER_POS[0] SHULKER_POS[2]
+    item replace block SHULKER_POS[0] SHULKER_POS[1] SHULKER_POS[2] container.0 with minecraft:stone

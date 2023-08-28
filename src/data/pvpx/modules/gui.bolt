@@ -1,0 +1,26 @@
+from typing import Callable
+
+from wicked_expressions:api import StaticVar, Bool
+
+BIND_RUN_PATH = 'pvpx:hardcoded/gui/bind_gui_item'
+
+def bind_gui_item(vanilla_item_id, item_pvpx_id: str, callback: Callable):
+    full_item = f"{vanilla_item_id}{{pvpx:{{id:\"{item_pvpx_id}\"}}}}"
+    player_picked_item = StaticVar(Bool)
+
+    # runs on player tick, under func
+    # 'player_tick' in this module
+    append function BIND_RUN_PATH:
+        with player_picked_item.store(mode='success'):
+            # if any items are cleared,
+            # success is saved in the bool
+            clear @s full_item
+
+        if player_picked_item:
+            callback()
+
+def player_tick():
+    function BIND_RUN_PATH
+
+
+

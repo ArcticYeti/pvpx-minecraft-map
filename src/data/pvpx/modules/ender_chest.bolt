@@ -1,0 +1,14 @@
+from ./utility_shulker import SHULKER_POS, shulker_data
+
+def col_row_to_slot(col: int, row: int) -> int:
+    slot = col + (9 * row)
+    return slot
+
+def set_ender_chest_item(col: int, row: int, item_data: list[str, str], modifier: str = None):
+    slot = col_row_to_slot(col, row)
+    item replace block SHULKER_POS[0] SHULKER_POS[1] SHULKER_POS[2] container.0 with f"{item_data[0]}{item_data[1]}"
+
+    if modifier == None:
+        item replace entity @s f"enderchest.{slot}" from block SHULKER_POS[0] SHULKER_POS[1] SHULKER_POS[2] container.0
+        return
+    item replace entity @s f"enderchest.{slot}" from block SHULKER_POS[0] SHULKER_POS[1] SHULKER_POS[2] container.0 modifier

@@ -1,0 +1,66 @@
+from wicked_expressions:api import Scoreboard, Var, Int
+from lightning_rod:api import tag, untag
+
+from ../../utils import mc_return
+
+TEAM_MEMBER_TAG = 'pvpx.teams.team_member'
+pvpx_obj = Scoreboard('pvpx')
+max_team_size = pvpx_obj['.max_team_size']
+
+class Team:
+    SPECTATOR = 'pvpx.team.spectator'
+    RED = 'pvpx.team.red'
+    BLUE = 'pvpx.team.blue'
+
+def join_team(team_id: Team):
+    if team_id == Team.SPECTATOR:
+        tellraw @s {"text": "Spectating the current match!", "color": "gray"}
+    elif get_team_size(team_id) == max_team_size:
+        if entity @s[team=!team_id]:
+            playsound minecraft:block.dispenser.fail master @s ~ ~ ~ 1 1.5
+            playsound minecraft:block.dispenser.fail master @s ~ ~ ~ 1 2
+            tellraw @s {"text": "Team is full!", "color": "dark_red"}
+        if entity @s[team=team_id]:
+            _join_team_success(team_id)
+    else:
+        _join_team_success(team_id)
+
+def _join_team_success(team_id: Team):
+        team join team_id
+        tag(TEAM_MEMBER_TAG)
+        playsound minecraft:entity.experience_orb.pickup master @s ~ ~ ~ 1 1
+
+        team_short_id = team_id.split('.')[-1]
+        tellraw @s {"text": f"Joined team {team_short_id}!", "color": team_short_id}
+
+def leave_current_team():
+    untag(TEAM_MEMBER_TAG)
+
+    team leave @s
+    playsound minecraft:entity.ender_dragon.flap master @s ~ ~ ~ 1 2
+    tellraw @s {"text": "Left the team!", "color": "gray"}
+
+def get_team_size(team_id: Team):
+    team_size = Var(Int)
+
+    with team_size.store():
+        if entity @a[team=team_id]
+
+    return team_size
+
+def load():
+    global max_team_size
+
+    max_team_size = 3
+
+    team add Team.SPECTATOR {"text": Team.SPECTATOR, "color": "gray"}
+    team add Team.RED {"text": Team.RED, "color": "red"}
+    team add Team.BLUE {"text": Team.BLUE, "color": "blue"}
+
+    team modify Team.SPECTATOR color gray
+    team modify Team.RED color red
+    team modify Team.BLUE color blue
+
+    team modify Team.SPECTATOR friendlyFire false
+    team modify Team.RED friendlyFire false
+    team modify Team.BLUE friendlyFire false

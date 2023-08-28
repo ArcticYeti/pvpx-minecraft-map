@@ -1,0 +1,35 @@
+from wicked_expressions:api import Scoreboard
+from lightning_rod:api import tag, untag
+
+pvpx_obj = Scoreboard('pvpx')
+
+def pacify_player():
+    attribute @s minecraft:generic.attack_damage base set 0.0
+
+def unpacify_player():
+    attribute @s minecraft:generic.attack_damage base set 1.0
+
+def disable_pvp():
+    pvpx_obj['.pvp_enabled'] = 0
+
+    as @a:
+        pacify_player()
+
+def enable_pvp():
+    pvpx_obj['.pvp_enabled'] = 1
+
+    as @a:
+        unpacify_player()
+
+def load():
+    # defaults to pvp off
+    if not pvpx_obj['.pvp_enabled'].exists():
+        pvpx_obj['.pvp_enabled'] = 0
+
+def player_load():
+    # in case of players joining after
+    # pvp was enabled/disabled
+    if pvpx_obj['.pvp_enabled'] == 1:
+        unpacify_player()
+    else:
+        pacify_player()

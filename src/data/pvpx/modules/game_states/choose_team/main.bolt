@@ -1,15 +1,117 @@
+from wicked_expressions:api import Scoreboard, ExpressionNode
+
+from ../../pvp import enable_pvp, disable_pvp
+from ../../gui import bind_gui_item
+from ../../teams import join_team, Team, leave_current_team, get_team_size
+from ../../ender_chest import set_ender_chest_item
 from ../../game_state import bind_game_state_init, bind_game_state_exit,
                              GameState, set_game_state
 
+def _generate_item_lore_modifier(target_0: ExpressionNode, target_1: ExpressionNode, color: str = 'gray'):
+    modifier = {
+        "function": "minecraft:set_lore",
+        "entity": "this",
+        "lore": [
+            [
+                [
+                    {
+                        "score": {
+                            "name": target_0.holder,
+                            "objective": target_0.obj
+                        },
+                        "color": color,
+                        "italic": false
+                    },
+                    {
+                        "text": "/",
+                        "color": color,
+                        "italic": false
+                    },
+                    {
+                        "score": {
+                            "name": target_1.holder,
+                            "objective": target_1.obj
+                        },
+                        "color": color,
+                        "italic": false
+                    }
+                ]
+            ]
+        ],
+        "replace": true
+    }
+
+    return modifier
+
+def update_ender_chest_gui():
+    red_team_item = ['red_concrete', '{pvpx:{id:"choose_team.red"},display:{Name:\'{"text":"Team Red","color":"red","italic":false}\'}}']
+    blue_team_item = ['blue_concrete', '{pvpx:{id:"choose_team.blue"},display:{Name:\'{"text":"Team Blue","color":"blue","italic":false}\'}}']
+    spectator_item = ['ender_eye', '{pvpx:{id:"choose_team.spectator"},display:{Name:\'{"text":"Spectator","color":"gray","italic":false}\'}}']
+    leave_team_item = ['oak_door', '{pvpx:{id:"choose_team.leave_team"},display:{Name:\'{"text":"Leave Team","color":"gray","italic":false}\'}}']
+
+    max_team_size = Scoreboard('pvpx')['.max_team_size']
+    red_team_item_modifier_path = 'pvpx:hardcoded/choose_team/item_lore/red_team'
+    blue_team_item_modifier_path = 'pvpx:hardcoded/choose_team/item_lore/blue_team'
+    red_team_full_item_modifier_path = 'pvpx:hardcoded/choose_team/item_lore/red_team_full'
+    blue_team_full_item_modifier_path = 'pvpx:hardcoded/choose_team/item_lore/blue_team_full'
+
+    red_team_members = get_team_size(Team.RED)
+    blue_team_members = get_team_size(Team.BLUE)
+
+    item_modifier red_team_item_modifier_path _generate_item_lore_modifier(red_team_members, max_team_size)
+    item_modifier blue_team_item_modifier_path _generate_item_lore_modifier(blue_team_members, max_team_size)
+    item_modifier red_team_full_item_modifier_path _generate_item_lore_modifier(red_team_members, max_team_size, color='dark_red')
+    item_modifier blue_team_full_item_modifier_path _generate_item_lore_modifier(blue_team_members, max_team_size, color='dark_red')
+
+    if get_team_size(Team.RED) < max_team_size:
+        set_ender_chest_item(col=3, row=1, item_data=red_team_item, modifier=red_team_item_modifier_path)
+    else:
+        set_ender_chest_item(col=3, row=1, item_data=red_team_item, modifier=red_team_full_item_modifier_path)
+    if get_team_size(Team.BLUE) < max_team_size:
+        set_ender_chest_item(col=5, row=1, item_data=blue_team_item, modifier=blue_team_item_modifier_path)
+    else:
+        set_ender_chest_item(col=5, row=1, item_data=blue_team_item, modifier=blue_team_full_item_modifier_path)
+
+    set_ender_chest_item(col=4, row=1, item_data=spectator_item)
+    set_ender_chest_item(col=4, row=2, item_data=leave_team_item)
+
+def gui_join_team_red():
+    join_team(Team.RED)
+
+def gui_join_team_blue():
+    join_team(Team.BLUE)
+
+def gui_join_team_spectator():
+    join_team(Team.SPECTATOR)
+
+def gui_leave_team():
+    leave_current_team()
+
 def init():
-    effect give @a minecraft:night_vision infinite 0 true
+    disable_pvp()
 
 def exit():
-    effect clear @a minecraft:night_vision
-
+    ...
 
 def tick():
-    ...
+    # ambient particles
+    particle minecraft:end_rod 0 120 0 7 9 7 0.1 2 force
+    particle minecraft:end_rod 0 70 0 7 20 7 0.1 5 force
+
+def player_load():
+    spawnpoint @s 0 100 0 0
+
+def player_tick():
+    update_ender_chest_gui()
+
+    # checks if the player spawned on top of spawn (wrong)
+    if entity @s[x=0, y=180, z=0, dx=0, dy=0, dz=0]:
+        # tps player back to spawn
+        tp @s 0 100 0
 
 bind_game_state_init(init, GameState.CHOOSE_TEAM)
 bind_game_state_exit(exit, GameState.CHOOSE_TEAM)
+bind_gui_item('red_concrete', 'choose_team.red', gui_join_team_red)
+bind_gui_item('blue_concrete', 'choose_team.blue', gui_join_team_blue)
+bind_gui_item('ender_eye', 'choose_team.spectator', gui_join_team_spectator)
+bind_gui_item('oak_door', 'choose_team.leave_team', gui_leave_team)
