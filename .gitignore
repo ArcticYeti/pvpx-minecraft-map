@@ -1,3 +1,4 @@
 .vscode
 .beet_cache
 .venv
+.dist
