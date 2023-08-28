@@ -1,0 +1,13 @@
+from ../../game_state import bind_game_state_init, bind_game_state_exit,
+                             GameState, set_game_state
+from ../../game_state import game_state_init_callbacks
+
+
+def init():
+    say init class
+
+def exit():
+    say exit class
+
+bind_game_state_init(init, GameState.CHOOSE_CLASS)
+bind_game_state_exit(exit, GameState.CHOOSE_CLASS)

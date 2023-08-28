@@ -1,0 +1,15 @@
+from ../../game_state import bind_game_state_init, bind_game_state_exit,
+                             GameState, set_game_state
+
+def init():
+    effect give @a minecraft:night_vision infinite 0 true
+
+def exit():
+    effect clear @a minecraft:night_vision
+
+
+def tick():
+    ...
+
+bind_game_state_init(init, GameState.CHOOSE_TEAM)
+bind_game_state_exit(exit, GameState.CHOOSE_TEAM)

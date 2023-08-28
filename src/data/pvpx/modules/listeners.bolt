@@ -1,6 +1,11 @@
 from crankshaft:api import Listener
-from crankshaft:events import on_load, on_tick, on_player_tick
+from crankshaft:events import on_load, on_tick, on_player_load, on_player_tick,
+                              on_player_death, on_player_respawn
 
+from ./game_state import get_game_state, set_game_state, GameState
+import ./game_state as game_state
+import ./game_states/choose_team/main as game_state_choose_team
+import ./game_states/choose_class/main as game_state_choose_class
 
 @Listener(on_load)
 def _():
@@ -18,8 +23,29 @@ def _():
     gamerule doTraderSpawning false
     gamerule keepInventory true
     gamerule doMobSpawning false
+    gamerule spawnRadius 0
     time set noon
+    game_state.load()
 
 @Listener(on_tick)
 def _():
-    ...
+    if get_game_state() == GameState.CHOOSE_TEAM:
+        game_state_choose_team.tick()
+
+@Listener(on_player_load)
+def _():
+    if get_game_state() == GameState.CHOOSE_TEAM:
+        spawnpoint @s 0 100 0 0
+
+@Listener(on_player_tick)
+def _():
+    if get_game_state() == GameState.CHOOSE_TEAM:
+        game_state_choose_team.tick
+
+function ./set_state_0:
+    set_game_state(GameState.CHOOSE_TEAM)
+
+function ./set_state_1:
+    set_game_state(GameState.CHOOSE_CLASS)
+
+
