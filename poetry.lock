@@ -101,13 +101,13 @@ files = [
 
 [[package]]
 name = "crankshaft"
-version = "0.8.1"
+version = "0.9.2"
 description = "Bolt datapack flow control library."
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "crankshaft-0.8.1-py3-none-any.whl", hash = "sha256:ff338f69516d3d2f441fd27bc2a505a62714f7739c3d1ad333ca642fc10628a2"},
-    {file = "crankshaft-0.8.1.tar.gz", hash = "sha256:4062ff8e9aed045fa8ea17c190e247ce5a6e7f06243cd64de8c33a2edf766d4d"},
+    {file = "crankshaft-0.9.2-py3-none-any.whl", hash = "sha256:fdc1b3ce1479648ef04a65502fa7fce0f9acb01a45f3f155a6e35f5d937be6e1"},
+    {file = "crankshaft-0.9.2.tar.gz", hash = "sha256:6ade89079e6119484aea3c63a4ced4dc8c1f1d49e78596cc756393bc6e9f7418"},
 ]
 
 [package.dependencies]
@@ -438,4 +438,4 @@ mecha = ">=0.73.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ae8322e990cfcf435978cd2803c22f718072bb28f6268c90a70712bc2cbafcf1"
+content-hash = "aebc992691f0bf108659c05a7131d2e49f38104ca8c57decf886bba0473aedf1"
