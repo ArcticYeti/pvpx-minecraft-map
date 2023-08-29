@@ -1,0 +1,45 @@
+from wicked_expressions:api import ExpressionNode, Scoreboard, StaticVar, Int
+from lightning_rod:api import set_xp, set_xp_percent, set_level
+
+countdown = Scoreboard('pvpx.xp_bar.countdown')['@s']
+
+def start_xp_bar_countdown(time_ticks: int | ExpressionNode):
+    global countdown
+
+    countdown = time_ticks
+
+def stop_xp_bar_countdown():
+    global countdown
+
+    countdown = -1
+    set_xp(0)
+    set_level(0)
+
+def player_tick():
+    global countdown
+
+    if countdown >= 1:
+        countdown -= 1
+
+        tick_of_second = StaticVar(Int)
+        xp_percent = StaticVar(Int)
+        seconds_left = StaticVar(Int)
+
+        tick_of_second = countdown % 20
+        xp_percent = tick_of_second * 5
+        seconds_left = countdown / 20
+
+        set_xp_percent(xp_percent)
+        set_level(seconds_left+1)
+
+        # if seconds_left <= 3:
+        #     if seconds_left > 0:
+        #         if tick_of_second == 19:
+        #             playsound minecraft:block.note_block.hat master @s ~ ~ ~ 1 1
+        #             title @s times 0 10 5
+        #             title @s title {"score": {"name": seconds_left.holder, "obj": seconds_left.obj}, "color": "green"}
+    else:
+        countdown = -1
+        set_level(0)
+
+

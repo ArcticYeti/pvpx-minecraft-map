@@ -1,8 +1,6 @@
 from wicked_expressions:api import Scoreboard, Var, Int
 from lightning_rod:api import tag, untag
 
-from ../../utils import mc_return
-
 TEAM_MEMBER_TAG = 'pvpx.teams.team_member'
 pvpx_obj = Scoreboard('pvpx')
 max_team_size = pvpx_obj['.max_team_size']
@@ -15,6 +13,8 @@ class Team:
 def join_team(team_id: Team):
     if team_id == Team.SPECTATOR:
         tellraw @s {"text": "Spectating the current match!", "color": "gray"}
+        playsound minecraft:entity.experience_orb.pickup master @s ~ ~ ~ 1 1
+        tag(TEAM_MEMBER_TAG)
     elif get_team_size(team_id) == max_team_size:
         if entity @s[team=!team_id]:
             playsound minecraft:block.dispenser.fail master @s ~ ~ ~ 1 1.5

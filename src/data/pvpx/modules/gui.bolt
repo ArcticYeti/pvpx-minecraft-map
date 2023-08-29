@@ -1,10 +1,12 @@
 from typing import Callable
 
 from wicked_expressions:api import StaticVar, Bool
+from lightning_rod:api import tag, untag
 
 BIND_RUN_PATH = 'pvpx:hardcoded/gui/bind_gui_item'
+AUTO_CLOSE_TAG = 'pvpx.gui.auto_close'
 
-def bind_gui_item(vanilla_item_id, item_pvpx_id: str, callback: Callable):
+def bind_gui_item(vanilla_item_id, item_pvpx_id: str, callback: Callable, auto_close=False):
     full_item = f"{vanilla_item_id}{{pvpx:{{id:\"{item_pvpx_id}\"}}}}"
     player_picked_item = StaticVar(Bool)
 
@@ -19,8 +21,21 @@ def bind_gui_item(vanilla_item_id, item_pvpx_id: str, callback: Callable):
         if player_picked_item:
             callback()
 
+            if auto_close:
+                # auto close chest
+                tp @s ~ ~-8 ~
+                tag(AUTO_CLOSE_TAG)
+
 def player_tick():
     function BIND_RUN_PATH
 
+    AUTO_CLOSE_TEMP_TAG = 'pvpx.gui.auto_close.temp'
 
+    # evil 1 tick delay hack
+    if entity @s[tag=AUTO_CLOSE_TEMP_TAG]:
+        untag(AUTO_CLOSE_TEMP_TAG)
+        tp @s ~ ~8 ~
+    if entity @s[tag=AUTO_CLOSE_TAG]:
+        tag(AUTO_CLOSE_TEMP_TAG)
+        untag(AUTO_CLOSE_TAG)
 

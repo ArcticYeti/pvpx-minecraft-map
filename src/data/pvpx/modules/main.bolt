@@ -1,3 +1,8 @@
 import ./listeners as listeners
+from ./game_state import GameState, set_game_state
 
+function debug:game_state_0:
+    set_game_state(GameState.CHOOSE_TEAM)
 
+function debug:game_state_1:
+    set_game_state(GameState.CHOOSE_CLASS)

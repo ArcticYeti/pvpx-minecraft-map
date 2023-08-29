@@ -1,13 +1,95 @@
+from wicked_expressions:api import Float, this, StaticVar, Int
+
+from ../../gui import bind_gui_item
+from ../../utils import summon
+from ../../ender_chest import clear_ender_chest, set_ender_chest_item
+from ../../teams import Team
 from ../../game_state import bind_game_state_init, bind_game_state_exit,
                              GameState, set_game_state
-from ../../game_state import game_state_init_callbacks
 
+LABEL_TAG = 'pvpx.choose_class.label'
+
+def update_ender_chest_gui():
+    class_warrior = ['iron_sword', '{pvpx:{id:"choose_class.warrior"},display:{Name:\'{"text":"Warrior","color":"gold","italic":false}\'},HideFlags:2}']
+    class_archer = ['bow', '{pvpx:{id:"choose_class.archer"},display:{Name:\'{"text":"Archer","color":"gold","italic":false}\'},HideFlags:2}']
+    class_assassin = ['leather_boots', '{pvpx:{id:"choose_class.assassin"},display:{Name:\'{"text":"Assassin","color":"gold","italic":false}\',color:1908001},HideFlags:255}']
+
+    set_ender_chest_item(col=0, row=0, item_data=class_warrior)
+    set_ender_chest_item(col=1, row=0, item_data=class_archer)
+    set_ender_chest_item(col=2, row=0, item_data=class_assassin)
+
+def gui_pick_warrior():
+    ...
+
+def gui_pick_archer():
+    ...
+
+def gui_pick_assassin():
+    ...
 
 def init():
-    say init class
+    as @a[team=Team.RED] at @s:
+        tp @s ~48 ~ ~
+    as @a[team=Team.BLUE] at @s:
+        tp @s ~-48 ~ ~
+
+    # label
+    kill @e[type=text_display, tag=LABEL_TAG]
+    label_y_pos = 101.5
+
+    # label spectator
+    positioned 0 label_y_pos 6:
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"WAITING FOR TEAMS...","color":"white","bold":true}'}
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"WAITING FOR TEAMS...","color":"white","bold":true}'}:
+            this.Rotation = [Float(180.0), Float(0.0)]
+
+    # label red
+    positioned 48 label_y_pos 6:
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"CHOOSE YOUR CLASS!","color":"red","bold":true}'}
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"CHOOSE YOUR CLASS!","color":"red","bold":true}'}:
+            this.Rotation = [Float(180.0), Float(0.0)]
+
+    # label blue
+    positioned -48 label_y_pos 6:
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"CHOOSE YOUR CLASS!","color":"blue","bold":true}'}
+        summon minecraft:text_display ~ ~ ~ {Tags:[LABEL_TAG],text:'{"text":"CHOOSE YOUR CLASS!","color":"blue","bold":true}'}:
+            this.Rotation = [Float(180.0), Float(0.0)]
 
 def exit():
-    say exit class
+    kill @e[type=text_display, tag=LABEL_TAG]
+
+def tick():
+    # ambient particles
+    positioned 48 0 0:
+        # red
+        particle minecraft:end_rod ~ 120 ~ 7 9 7 0.1 2 force
+        particle minecraft:end_rod ~ 70 ~ 7 20 7 0.1 5 force
+    positioned -48 0 0:
+        # blue
+        particle minecraft:end_rod ~ 120 ~ 7 9 7 0.1 2 force
+        particle minecraft:end_rod ~ 70 ~ 7 20 7 0.1 5 force
+    positioned 0 0 0:
+        # main room (for spectators)
+        particle minecraft:end_rod ~ 120 ~ 7 9 7 0.1 2 force
+        particle minecraft:end_rod ~ 70 ~ 7 20 7 0.1 5 force
+
+    # spectator skull idle animation
+    skull_idle_timer = StaticVar(Int)
+
+    skull_idle_timer += 1
+    
+    if skull_idle_timer == 16:
+        skull_idle_timer = 0
+
+    for rot in range(16):
+        if skull_idle_timer == rot:
+            setblock 0 100 6 f"minecraft:skeleton_skull[rotation={rot}]"
+
+def player_tick():
+    update_ender_chest_gui()
 
 bind_game_state_init(init, GameState.CHOOSE_CLASS)
 bind_game_state_exit(exit, GameState.CHOOSE_CLASS)
+bind_gui_item('iron_sword', 'choose_class.warrior', gui_pick_warrior, auto_close=True)
+bind_gui_item('bow', 'choose_class.archer', gui_pick_archer, auto_close=True)
+bind_gui_item('leather_boots', 'choose_class.assassin', gui_pick_assassin, auto_close=True)

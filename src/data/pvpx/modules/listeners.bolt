@@ -2,7 +2,8 @@ from crankshaft:api import Listener
 from crankshaft:events import on_load, on_tick, on_player_load, on_player_tick,
                               on_player_death, on_player_respawn
 
-from ./game_state import get_game_state, set_game_state, GameState
+from ./game_state import get_game_state, GameState
+import ./xp_bar as xp_bar
 import ./teams as teams
 import ./gui as gui
 import ./pvp as pvp
@@ -36,8 +37,12 @@ def _():
 
 @Listener(on_tick)
 def _():
-    if get_game_state() == GameState.CHOOSE_TEAM:
+    game_state = get_game_state()
+    
+    if game_state == GameState.CHOOSE_TEAM:
         game_state_choose_team.tick()
+    elif game_state == GameState.CHOOSE_CLASS:
+        game_state_choose_class.tick()
 
 @Listener(on_player_load)
 def _():
@@ -49,6 +54,11 @@ def _():
 @Listener(on_player_tick)
 def _():
     gui.player_tick()
+    xp_bar.player_tick()
 
-    if get_game_state() == GameState.CHOOSE_TEAM:
+    game_state = get_game_state()
+
+    if game_state == GameState.CHOOSE_TEAM:
         game_state_choose_team.player_tick()
+    elif game_state == GameState.CHOOSE_CLASS:
+        game_state_choose_class.player_tick()
